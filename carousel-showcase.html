@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carousel Types — Live Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f0e8;
+  --surface: #ffffff;
+  --dark: #1a1510;
+  --ink: #2d2820;
+  --muted: #8a7f72;
+  --border: #e0d8cc;
+  --accent: #c8401a;
+  --accent2: #2a6b4a;
+  --accent3: #1a4a8a;
+  --accent4: #7a3a8a;
+  --yellow: #e8c84a;
+  --code-bg: #1e1b16;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.6;
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--dark);
+  color: #f5f0e8;
+  padding: 0 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid var(--accent);
+}
+.site-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+}
+.site-logo span { color: var(--accent); }
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: rgba(245,240,232,0.6);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--yellow); }
+
+/* ── HERO ── */
+.hero {
+  background: var(--dark);
+  color: #f5f0e8;
+  padding: 6rem 3rem 5rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: 'CAROUSEL';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 22vw;
+  font-weight: 900;
+  color: rgba(255,255,255,0.03);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  pointer-events: none;
+  letter-spacing: -0.05em;
+}
+.hero-tag {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.3rem 1rem;
+  border-radius: 2px;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  max-width: 700px;
+  margin-bottom: 1.5rem;
+}
+.hero h1 em { color: var(--yellow); font-style: italic; }
+.hero-desc {
+  color: rgba(245,240,232,0.65);
+  font-size: 1.1rem;
+  max-width: 540px;
+  margin-bottom: 2.5rem;
+}
+.hero-types {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.type-pill {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(245,240,232,0.75);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 100px;
+  letter-spacing: 0.05em;
+}
+
+/* ── TABLE OF CONTENTS ── */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 3rem auto;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.8rem;
+}
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.2s, color 0.2s;
+  border: 1px solid transparent;
+}
+.toc-item:hover {
+  background: var(--bg);
+  border-color: var(--border);
+}
+.toc-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--muted);
+  min-width: 24px;
+}
+.toc-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* ── SECTION WRAPPER ── */
+.showcase {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 3rem 3rem;
+}
+
+.demo-section {
+  margin-bottom: 6rem;
+  scroll-margin-top: 80px;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+}
+.section-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--border);
+  flex-shrink: 0;
+  margin-top: -0.5rem;
+}
+.section-meta { flex: 1; }
+.section-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.7rem;
+  border-radius: 100px;
+  margin-bottom: 0.6rem;
+  color: #fff;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  line-height: 1.15;
+}
+.section-desc {
+  color: var(--muted);
+  font-size: 0.95rem;
+  max-width: 560px;
+}
+
+/* ── DEMO BOX ── */
+.demo-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+}
+.demo-label {
+  background: var(--dark);
+  color: rgba(255,255,255,0.5);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  padding: 0.6rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.demo-label::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ── COMPARISON TABLE ── */
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin-bottom: 2rem;
+  background: var(--surface);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.comp-table th {
+  background: var(--dark);
+  color: #f5f0e8;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.2rem;
+  text-align: left;
+}
+.comp-table td {
+  padding: 0.75rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table tr:nth-child(even) td { background: #faf8f4; }
+.comp-table .check { color: var(--accent2); font-weight: 700; }
+.comp-table .cross { color: var(--accent); font-weight: 700; }
+.comp-table .label-cell {
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* ── CODE BLOCK ── */
+.code-wrap {
+  background: var(--code-bg);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.2rem;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.code-dots { display: flex; gap: 6px; }
+.code-dots span {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+}
+.code-lang {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+pre {
+  padding: 1.4rem 1.6rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 1.75;
+  overflow-x: auto;
+  color: #c9c4b8;
+}
+.kw { color: #e06c75; }
+.fn { color: #61afef; }
+.st { color: #98c379; }
+.cm { color: #5c6370; font-style: italic; }
+.nm { color: #d19a66; }
+.at { color: #e5c07b; }
+.va { color: #abb2bf; }
+
+/* ══════════════════════════════════════
+   CAROUSEL 1 — FULL-WIDTH IMAGE SLIDER
+══════════════════════════════════════ */
+.c1-wrapper {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+}
+.c1-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.77,0,0.175,1);
+}
+.c1-slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+.c1-slide img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.c1-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  padding: 2.5rem;
+}
+.c1-caption { color: #fff; }
+.c1-caption h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  line-height: 1.1;
+  margin-bottom: 0.3rem;
+}
+.c1-caption p { font-size: 0.9rem; opacity: 0.8; }
+.c1-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: all 0.2s;
+  z-index: 10;
+}
+.c1-btn:hover { background: rgba(255,255,255,0.3); transform: translateY(-50%) scale(1.1); }
+.c1-prev { left: 1rem; }
+.c1-next { right: 1rem; }
+.c1-dots {
+  position: absolute;
+  bottom: 1rem; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 6px; z-index: 10;
+}
+.c1-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+}
+.c1-dot.active { background: #fff; width: 20px; border-radius: 100px; }
+
+/* ══════════════════════════════════════
+   CAROUSEL 2 — FADE / CROSSFADE
+══════════════════════════════════════ */
+.c2-wrapper {
+  position: relative;
+  height: 380px;
+  overflow: hidden;
+}
+.c2-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+.c2-slide.active { opacity: 1; pointer-events: auto; }
+.c2-slide img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.c2-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+.c2-text h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+.c2-text p { color: rgba(255,255,255,0.8); font-size: 1rem; }
+.c2-controls {
+  position: absolute;
+  bottom: 1.2rem; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 8px; z-index: 10;
+}
+.c2-dot {
+  width: 28px; height: 4px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer; border: none;
+  transition: background 0.3s;
+}
+.c2-dot.active { background: #fff; }
+.c2-timer-bar {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 3px;
+  background: var(--accent);
+  width: 0%;
+  transition: width linear;
+  z-index: 20;
+}
+
+/* ══════════════════════════════════════
+   CAROUSEL 3 — MULTI-CARD / PEEK
+══════════════════════════════════════ */
+.c3-outer {
+  padding: 2rem;
+  overflow: hidden;
+}
+.c3-viewport {
+  overflow: hidden;
+  border-radius: 12px;
+}
+.c3-track {
+  display: flex;
+  gap: 1.2rem;
+  transition: transform 0.5s cubic-bezier(0.77,0,0.175,1);
+}
+.c3-card {
+  min-width: calc(33.333% - 0.8rem);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.c3-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+.c3-card img {
+  width: 100%; height: 180px;
+  object-fit: cover; display: block;
+}
+.c3-card-body { padding: 1rem; }
+.c3-card-body h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.c3-card-body p { font-size: 0.82rem; color: var(--muted); }
+.c3-card-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  margin-bottom: 0.5rem;
+  background: #f0ebe2;
+  color: var(--muted);
+}
+.c3-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+.c3-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  display: grid; place-items: center;
+  font-size: 1rem;
+  transition: all 0.2s;
+  color: var(--ink);
+}
+.c3-btn:hover { background: var(--dark); color: #fff; border-color: var(--dark); }
+
+/* ══════════════════════════════════════
+   CAROUSEL 4 — THUMBNAIL NAVIGATOR
+══════════════════════════════════════ */
+.c4-wrapper { padding: 1.5rem; }
+.c4-main {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  height: 320px;
+  margin-bottom: 1rem;
+}
+.c4-main-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease;
+}
+.c4-main-slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+.c4-main-slide img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.c4-main-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+  padding: 1.5rem;
+  color: #fff;
+}
+.c4-main-caption h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  margin-bottom: 0.2rem;
+}
+.c4-main-caption p { font-size: 0.8rem; opacity: 0.8; }
+.c4-thumbs {
+  display: flex;
+  gap: 0.6rem;
+  overflow: hidden;
+}
+.c4-thumb {
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  flex: 1;
+  height: 68px;
+  opacity: 0.55;
+  border: 2px solid transparent;
+  transition: opacity 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.c4-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.c4-thumb.active { opacity: 1; border-color: var(--accent); }
+
+/* ══════════════════════════════════════
+   CAROUSEL 5 — TESTIMONIAL / TEXT
+══════════════════════════════════════ */
+.c5-wrapper { padding: 3rem 4rem; background: linear-gradient(135deg, #1a1510, #2d2820); }
+.c5-track { position: relative; min-height: 180px; }
+.c5-slide {
+  position: absolute; inset: 0;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateX(20px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.c5-slide.active {
+  opacity: 1; pointer-events: auto;
+  transform: translateX(0);
+}
+.c5-quote-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 6rem;
+  line-height: 0.5;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: block;
+}
+.c5-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-style: italic;
+  color: #f5f0e8;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+.c5-author { display: flex; align-items: center; gap: 1rem; }
+.c5-avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+}
+.c5-author-name {
+  color: #f5f0e8;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.c5-author-role { color: rgba(245,240,232,0.5); font-size: 0.82rem; }
+.c5-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+.c5-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  font-size: 1rem;
+  display: grid; place-items: center;
+  transition: all 0.2s;
+}
+.c5-btn:hover { border-color: var(--accent); color: var(--accent); }
+.c5-indicators { display: flex; gap: 6px; }
+.c5-ind {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer; border: none;
+  transition: all 0.3s;
+}
+.c5-ind.active { background: var(--accent); transform: scale(1.3); }
+
+/* ══════════════════════════════════════
+   CAROUSEL 6 — VERTICAL / CONTENT STACK
+══════════════════════════════════════ */
+.c6-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 380px;
+}
+.c6-left { position: relative; overflow: hidden; }
+.c6-img-track {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.5s cubic-bezier(0.77,0,0.175,1);
+}
+.c6-img {
+  min-height: 380px;
+  flex-shrink: 0;
+}
+.c6-img img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.c6-right {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--dark);
+}
+.c6-slides-panel { flex: 1; position: relative; min-height: 200px; }
+.c6-text-slide {
+  position: absolute; inset: 0;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.5s;
+  display: flex; flex-direction: column;
+  justify-content: center;
+}
+.c6-text-slide.active { opacity: 1; pointer-events: auto; }
+.c6-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.8rem;
+}
+.c6-text-slide h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem;
+  color: #f5f0e8;
+  margin-bottom: 0.8rem;
+  line-height: 1.15;
+}
+.c6-text-slide p { color: rgba(245,240,232,0.6); font-size: 0.9rem; line-height: 1.7; }
+.c6-nav {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+.c6-tab {
+  height: 3px;
+  flex: 1;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.15);
+  cursor: pointer;
+  border: none;
+  transition: background 0.3s;
+}
+.c6-tab.active { background: var(--accent); }
+
+/* ══════════════════════════════════════
+   CAROUSEL 7 — CINEMATIC / PARALLAX
+══════════════════════════════════════ */
+.c7-wrapper {
+  position: relative;
+  height: 460px;
+  overflow: hidden;
+}
+.c7-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+}
+.c7-slide.active { opacity: 1; pointer-events: auto; }
+.c7-bg {
+  position: absolute; inset: -40px;
+  background-size: cover;
+  background-position: center;
+  transition: transform 8s ease-out;
+  transform: scale(1.08);
+}
+.c7-slide.active .c7-bg { transform: scale(1); }
+.c7-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 100%);
+  display: flex;
+  align-items: center;
+  padding: 4rem;
+}
+.c7-content { max-width: 540px; color: #fff; }
+.c7-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 1rem;
+}
+.c7-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.c7-content p { font-size: 1rem; opacity: 0.8; line-height: 1.6; margin-bottom: 1.5rem; }
+.c7-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.c7-cta:hover { background: #a8330e; transform: translateY(-2px); }
+.c7-side-nav {
+  position: absolute;
+  right: 2.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+}
+.c7-side-dot {
+  width: 4px; height: 28px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.25);
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+}
+.c7-side-dot.active { background: #fff; height: 48px; }
+.c7-progress {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 3px;
+  background: var(--accent);
+  transition: width 0.1s linear;
+  z-index: 20;
+}
+
+/* ── BIG COMPARISON TABLE ── */
+.big-table-section {
+  background: var(--dark);
+  color: #f5f0e8;
+  padding: 5rem 3rem;
+  margin-bottom: 4rem;
+}
+.big-table-inner { max-width: 1100px; margin: 0 auto; }
+.big-table-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+.big-table-section p { color: rgba(245,240,232,0.55); margin-bottom: 2.5rem; }
+.big-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+}
+.big-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+  color: rgba(245,240,232,0.5);
+}
+.big-table td {
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  vertical-align: middle;
+}
+.big-table tr:last-child td { border-bottom: none; }
+.big-table tr:hover td { background: rgba(255,255,255,0.03); }
+.big-table .type-name {
+  font-weight: 700;
+  color: #f5f0e8;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+}
+.big-table .type-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin-bottom: 0.1rem;
+}
+.pill-yes {
+  background: rgba(42,107,74,0.3);
+  color: #6ee7a8;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.pill-no {
+  background: rgba(200,64,26,0.2);
+  color: #e07060;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.pill-med {
+  background: rgba(232,200,74,0.2);
+  color: #e8c84a;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.diff-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  padding: 0.18rem 0.6rem;
+  border-radius: 100px;
+  letter-spacing: 0.05em;
+}
+.diff-easy { background: rgba(42,107,74,0.3); color: #6ee7a8; }
+.diff-med  { background: rgba(232,200,74,0.2); color: #e8c84a; }
+.diff-hard { background: rgba(200,64,26,0.2);  color: #e07060; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--dark);
+  color: rgba(245,240,232,0.4);
+  text-align: center;
+  padding: 2.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  border-top: 3px solid var(--accent);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .site-header { padding: 0 1.5rem; }
+  .nav-links { display: none; }
+  .hero { padding: 4rem 1.5rem; }
+  .showcase { padding: 0 1.5rem 3rem; }
+  .toc { margin: 2rem 1.5rem; }
+  .c3-card { min-width: calc(80% - 0.6rem); }
+  .c6-wrapper { grid-template-columns: 1fr; }
+  .c6-left { display: none; }
+  .section-header { flex-direction: column; gap: 0.5rem; }
+  .section-num { font-size: 3rem; }
+  .c7-content h2 { font-size: 2rem; }
+  .c7-overlay { padding: 2rem; }
+  .big-table-section { padding: 3rem 1.5rem; }
+}
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.vis { opacity: 1; transform: translateY(0); }
+
+/* Accent tag colours */
+.tag-red    { background: var(--accent); }
+.tag-green  { background: var(--accent2); }
+.tag-blue   { background: var(--accent3); }
+.tag-purple { background: var(--accent4); }
+.tag-gold   { background: #9a7a10; }
+.tag-teal   { background: #1a6a6a; }
+.tag-rust   { background: #8a4a1a; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="site-logo">Carousel<span>.</span>Demo</div>
+  <ul class="nav-links">
+    <li><a href="#c1">Full-Width</a></li>
+    <li><a href="#c2">Fade</a></li>
+    <li><a href="#c3">Multi-Card</a></li>
+    <li><a href="#c4">Thumbnail</a></li>
+    <li><a href="#c5">Testimonial</a></li>
+    <li><a href="#c6">Split</a></li>
+    <li><a href="#c7">Cinematic</a></li>
+  </ul>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">🎠 Interactive Showcase</div>
+  <h1>7 Types of<br><em>Carousel Slides</em></h1>
+  <p class="hero-desc">Every live demo below is fully interactive — real photos, working navigation, and clean code ready to copy.</p>
+  <div class="hero-types">
+    <span class="type-pill">Full-Width Slider</span>
+    <span class="type-pill">Fade / Crossfade</span>
+    <span class="type-pill">Multi-Card</span>
+    <span class="type-pill">Thumbnail Nav</span>
+    <span class="type-pill">Testimonial</span>
+    <span class="type-pill">Split / Vertical</span>
+    <span class="type-pill">Cinematic</span>
+  </div>
+</section>
+
+<!-- TABLE OF CONTENTS -->
+<nav class="toc">
+  <a class="toc-item" href="#c1"><span class="toc-num">01</span><span class="toc-name">Full-Width Slider</span></a>
+  <a class="toc-item" href="#c2"><span class="toc-num">02</span><span class="toc-name">Fade Carousel</span></a>
+  <a class="toc-item" href="#c3"><span class="toc-num">03</span><span class="toc-name">Multi-Card</span></a>
+  <a class="toc-item" href="#c4"><span class="toc-num">04</span><span class="toc-name">Thumbnail Navigator</span></a>
+  <a class="toc-item" href="#c5"><span class="toc-num">05</span><span class="toc-name">Testimonial</span></a>
+  <a class="toc-item" href="#c6"><span class="toc-num">06</span><span class="toc-name">Split / Vertical</span></a>
+  <a class="toc-item" href="#c7"><span class="toc-num">07</span><span class="toc-name">Cinematic</span></a>
+</nav>
+
+<div class="showcase">
+
+<!-- ════════════════════════════════════
+  01 — FULL-WIDTH IMAGE SLIDER
+════════════════════════════════════ -->
+<section class="demo-section reveal" id="c1">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-meta">
+      <span class="section-tag tag-red">Most Common</span>
+      <h2 class="section-title">Full-Width Image Slider</h2>
+      <p class="section-desc">The classic. One slide fills the full container width. Best for hero banners, photography, and featured promotions. Uses CSS translateX to shift the track.</p>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">LIVE DEMO — FULL-WIDTH SLIDER</div>
+    <div class="c1-wrapper">
+      <div class="c1-track" id="c1track">
+        <div class="c1-slide">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80" alt="Mountain landscape">
+          <div class="c1-overlay"><div class="c1-caption"><h3>Alpine Horizons</h3><p>Above the clouds, the world looks different</p></div></div>
+        </div>
+        <div class="c1-slide">
+          <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&q=80" alt="Forest path">
+          <div class="c1-overlay"><div class="c1-caption"><h3>Into the Forest</h3><p>Where sunlight filters through ancient trees</p></div></div>
+        </div>
+        <div class="c1-slide">
+          <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1200&q=80" alt="Ocean waves">
+          <div class="c1-overlay"><div class="c1-caption"><h3>Ocean Tide</h3><p>The rhythm of waves at golden hour</p></div></div>
+        </div>
+        <div class="c1-slide">
+          <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=80" alt="Desert landscape">
+          <div class="c1-overlay"><div class="c1-caption"><h3>Desert Silence</h3><p>Vast sand dunes painted by the sun</p></div></div>
+        </div>
+      </div>
+      <button class="c1-btn c1-prev" id="c1prev">&#8592;</button>
+      <button class="c1-btn c1-next" id="c1next">&#8594;</button>
+      <div class="c1-dots" id="c1dots">
+        <button class="c1-dot active"></button>
+        <button class="c1-dot"></button>
+        <button class="c1-dot"></button>
+        <button class="c1-dot"></button>
+      </div>
+    </div>
+  </div>
+
+  <table class="comp-table">
+    <thead><tr>
+      <th>Property</th><th>Value</th><th>Notes</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="label-cell">Animation</td><td>CSS translateX</td><td>GPU-accelerated, silky smooth</td></tr>
+      <tr><td class="label-cell">Best for</td><td>Hero banners, galleries</td><td>Full visual impact</td></tr>
+      <tr><td class="label-cell">Autoplay</td><td><span class="check">✓ Yes</span></td><td>Pause on hover recommended</td></tr>
+      <tr><td class="label-cell">Touch/Swipe</td><td><span class="check">✓ Yes</span></td><td>Essential for mobile</td></tr>
+      <tr><td class="label-cell">Difficulty</td><td><span class="diff-tag diff-easy">Easy</span></td><td>~30 lines of JS</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-wrap">
+    <div class="code-header">
+      <div class="code-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+      <span class="code-lang">HTML + CSS + JS</span>
+    </div>
+<pre><span class="cm">&lt;!-- HTML Structure --&gt;</span>
+<span class="kw">&lt;div</span> <span class="at">class</span>=<span class="st">"carousel"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;div</span> <span class="at">class</span>=<span class="st">"track"</span> <span class="at">id</span>=<span class="st">"track"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;div</span> <span class="at">class</span>=<span class="st">"slide"</span><span class="kw">&gt;&lt;img</span> <span class="at">src</span>=<span class="st">"photo1.jpg"</span> <span class="at">alt</span>=<span class="st">"Slide 1"</span><span class="kw">&gt;&lt;/div&gt;</span>
+    <span class="kw">&lt;div</span> <span class="at">class</span>=<span class="st">"slide"</span><span class="kw">&gt;&lt;img</span> <span class="at">src</span>=<span class="st">"photo2.jpg"</span> <span class="at">alt</span>=<span class="st">"Slide 2"</span><span class="kw">&gt;&lt;/div&gt;</span>
+  <span class="kw">&lt;/div&gt;</span>
+  <span class="kw">&lt;button</span> <span class="at">id</span>=<span class="st">"prev"</span><span class="kw">&gt;</span>←<span class="kw">&lt;/button&gt;</span>
+  <span class="kw">&lt;button</span> <span class="at">id</span>=<span class="st">"next"</span><span class="kw">&gt;</span>→<span class="kw">&lt;/button&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+
+<span class="cm">/* CSS */</span>
+<span class="fn">.carousel</span> { <span class="at">overflow</span>: <span class="st">hidden</span>; }
+<span class="fn">.track</span>    { <span class="at">display</span>: <span class="st">flex</span>; <span class="at">transition</span>: <span class="st">transform 0.6s cubic-bezier(.77,0,.175,1)</span>; }
+<span class="fn">.slide</span>    { <span class="at">min-width</span>: <span class="nm">100%</span>; }
+
+<span class="cm">// JavaScript</span>
+<span class="kw">let</span> idx = <span class="nm">0</span>;
+<span class="kw">const</span> track = document.<span class="fn">getElementById</span>(<span class="st">'track'</span>);
+<span class="kw">const</span> total = document.<span class="fn">querySelectorAll</span>(<span class="st">'.slide'</span>).length;
+
+<span class="kw">function</span> <span class="fn">goTo</span>(n) {
+  idx = ((n % total) + total) % total; <span class="cm">// wrap around</span>
+  track.style.transform = <span class="st">`translateX(-${idx * 100}%)`</span>;
+}
+document.<span class="fn">getElementById</span>(<span class="st">'next'</span>).onclick = () => <span class="fn">goTo</span>(idx + <span class="nm">1</span>);
+document.<span class="fn">getElementById</span>(<span class="st">'prev'</span>).onclick = () => <span class="fn">goTo</span>(idx - <span class="nm">1</span>);</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  02 — FADE CAROUSEL
+════════════════════════════════════ -->
+<section class="demo-section reveal" id="c2">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-meta">
+      <span class="section-tag tag-green">Elegant</span>
+      <h2 class="section-title">Fade / Crossfade Carousel</h2>
+      <p class="section-desc">Slides dissolve into each other using CSS opacity transitions. No directional movement — perfect for testimonials, quotes, and content where sliding feels too abrupt.</p>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">LIVE DEMO — FADE CAROUSEL (AUTO-ADVANCING)</div>
+    <div class="c2-wrapper">
+      <div class="c2-slide active" id="c2s0">
+        <img src="https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?w=1200&q=80" alt="City lights">
+        <div class="c2-overlay"><div class="c2-text"><h3>City After Dark</h3><p>When the lights come on, the city breathes</p></div></div>
+      </div>
+      <div class="c2-slide" id="c2s1">
+        <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200&q=80" alt="Skyline">
+        <div class="c2-overlay"><div class="c2-text"><h3>Urban Geometry</h3><p>Glass towers reflecting a clouded sky</p></div></div>
+      </div>
+      <div class="c2-slide" id="c2s2">
+        <img src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=1200&q=80" alt="Street">
+        <div class="c2-overlay"><div class="c2-text"><h3>Street Level</h3><p>The pulse of the city on an autumn evening</p></div></div>
+      </div>
+      <div class="c2-controls" id="c2dots">
+        <button class="c2-dot active"></button>
+        <button class="c2-dot"></button>
+        <button class="c2-dot"></button>
+      </div>
+      <div class="c2-timer-bar" id="c2timer"></div>
+    </div>
+  </div>
+
+  <table class="comp-table">
+    <thead><tr><th>Property</th><th>Value</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">Animation</td><td>CSS opacity</td><td>All slides stacked; only 1 visible</td></tr>
+      <tr><td class="label-cell">Best for</td><td>Testimonials, moody visuals</td><td>No spatial confusion</td></tr>
+      <tr><td class="label-cell">Autoplay</td><td><span class="check">✓ Yes</span></td><td>Works great with timer bar</td></tr>
+      <tr><td class="label-cell">Slide direction</td><td><span class="cross">✗ None</span></td><td>Pure opacity — no movement</td></tr>
+      <tr><td class="label-cell">Difficulty</td><td><span class="diff-tag diff-easy">Easy</span></td><td>Simplest JS logic of all types</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-wrap">
+    <div class="code-header">
+      <div class="code-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+      <span class="code-lang">CSS KEY RULE + JS</span>
+    </div>
+<pre><span class="cm">/* All slides stacked on top of each other */</span>
+<span class="fn">.slide</span>        { <span class="at">position</span>: <span class="st">absolute</span>; <span class="at">inset</span>: <span class="nm">0</span>; <span class="at">opacity</span>: <span class="nm">0</span>; <span class="at">transition</span>: <span class="st">opacity 0.8s ease</span>; }
+<span class="fn">.slide.active</span> { <span class="at">opacity</span>: <span class="nm">1</span>; }   <span class="cm">/* toggle this class */</span>
+
+<span class="cm">// JavaScript — just swap the .active class</span>
+<span class="kw">let</span> current = <span class="nm">0</span>;
+<span class="kw">const</span> slides = document.<span class="fn">querySelectorAll</span>(<span class="st">'.slide'</span>);
+
+<span class="kw">function</span> <span class="fn">fadeToSlide</span>(n) {
+  slides[current].<span class="fn">classList</span>.remove(<span class="st">'active'</span>);
+  current = (n + slides.length) % slides.length;
+  slides[current].<span class="fn">classList</span>.add(<span class="st">'active'</span>);
+}
+
+<span class="cm">// Auto-advance every 4 seconds</span>
+setInterval(() => <span class="fn">fadeToSlide</span>(current + <span class="nm">1</span>), <span class="nm">4000</span>);</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  03 — MULTI-CARD
+════════════════════════════════════ -->
+<section class="demo-section reveal" id="c3">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-meta">
+      <span class="section-tag tag-blue">Popular</span>
+      <h2 class="section-title">Multi-Card Carousel</h2>
+      <p class="section-desc">Shows 2–3 cards simultaneously. Edges of adjacent cards peek in for affordance. Heavily used in e-commerce product rows, news listings, and blog previews.</p>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">LIVE DEMO — 3-CARD CAROUSEL (SCROLL LEFT/RIGHT)</div>
+    <div class="c3-outer">
+      <div class="c3-viewport">
+        <div class="c3-track" id="c3track">
+          <div class="c3-card">
+            <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&q=80" alt="Nature">
+            <div class="c3-card-body"><div class="c3-card-tag">🌿 NATURE</div><h4>Tropical Canopy</h4><p>Lush rainforest ecosystems and the biodiversity within</p></div>
+          </div>
+          <div class="c3-card">
+            <img src="https://images.unsplash.com/photo-1474524955719-b9f87c50ce47?w=600&q=80" alt="Architecture">
+            <div class="c3-card-body"><div class="c3-card-tag">🏛️ ARCHITECTURE</div><h4>Gothic Revival</h4><p>Stone arches and soaring spires from a forgotten era</p></div>
+          </div>
+          <div class="c3-card">
+            <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80" alt="Travel">
+            <div class="c3-card-body"><div class="c3-card-tag">✈️ TRAVEL</div><h4>Mountain Roads</h4><p>Winding passes through the heart of the Alps</p></div>
+          </div>
+          <div class="c3-card">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Food">
+            <div class="c3-card-body"><div class="c3-card-tag">🍽️ FOOD</div><h4>Artisan Craft</h4><p>Plated cuisine where every detail tells a story</p></div>
+          </div>
+          <div class="c3-card">
+            <img src="https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=600&q=80" alt="Lakes">
+            <div class="c3-card-body"><div class="c3-card-tag">💧 WATER</div><h4>Still Waters</h4><p>Mirror-like lakes reflecting the world above</p></div>
+          </div>
+          <div class="c3-card">
+            <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=600&q=80" alt="Sunrise">
+            <div class="c3-card-body"><div class="c3-card-tag">🌅 LIGHT</div><h4>Dawn Breaking</h4><p>First light touches the horizon with gold</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="c3-nav">
+        <button class="c3-btn" id="c3prev">&#8592;</button>
+        <button class="c3-btn" id="c3next">&#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <table class="comp-table">
+    <thead><tr><th>Property</th><th>Value</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">Visible Items</td><td>2–4 at once</td><td>Depends on container width</td></tr>
+      <tr><td class="label-cell">Best for</td><td>Products, articles, cards</td><td>Scannable at a glance</td></tr>
+      <tr><td class="label-cell">Peek effect</td><td><span class="check">✓ Yes</span></td><td>Signals more content exists</td></tr>
+      <tr><td class="label-cell">Responsive</td><td><span class="check">✓ Scales</span></td><td>Use CSS calc() for card widths</td></tr>
+      <tr><td class="label-cell">Difficulty</td><td><span class="diff-tag diff-med">Medium</span></td><td>Math for partial offsets</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-wrap">
+    <div class="code-header">
+      <div class="code-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+      <span class="code-lang">MULTI-CARD KEY CSS</span>
+    </div>
+<pre><span class="cm">/* Show 3 cards; peek at edges with padding */</span>
+<span class="fn">.viewport</span> { <span class="at">overflow</span>: <span class="st">hidden</span>; }
+<span class="fn">.track</span>    { <span class="at">display</span>: <span class="st">flex</span>; <span class="at">gap</span>: <span class="nm">1.2rem</span>; <span class="at">transition</span>: <span class="st">transform 0.5s ease</span>; }
+
+<span class="cm">/* Each card takes up exactly 1/3 of viewport */</span>
+<span class="fn">.card</span>     { <span class="at">min-width</span>: <span class="st">calc(33.333% - 0.8rem)</span>; }
+
+<span class="cm">// JavaScript — move by one card width</span>
+<span class="kw">let</span> pos = <span class="nm">0</span>;
+<span class="kw">const</span> cardW = track.children[<span class="nm">0</span>].offsetWidth + <span class="nm">19</span>; <span class="cm">// + gap</span>
+<span class="kw">const</span> maxPos = (cards.length - <span class="nm">3</span>) * cardW;
+
+<span class="fn">nextBtn</span>.onclick = () => {
+  pos = <span class="fn">Math.min</span>(pos + cardW, maxPos);
+  track.style.transform = <span class="st">`translateX(-${pos}px)`</span>;
+};</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  04 — THUMBNAIL NAVIGATOR
+════════════════════════════════════ -->
+<section class="demo-section reveal" id="c4">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-meta">
+      <span class="section-tag tag-purple">Gallery Style</span>
+      <h2 class="section-title">Thumbnail Navigator</h2>
+      <p class="section-desc">A large main image paired with a row of clickable thumbnail previews below. Users can jump directly to any slide. Classic for product galleries and photography portfolios.</p>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">LIVE DEMO — CLICK ANY THUMBNAIL TO JUMP</div>
+    <div class="c4-wrapper">
+      <div class="c4-main">
+        <div class="c4-main-track" id="c4track">
+          <div class="c4-main-slide">
+            <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=900&q=80" alt="Product 1">
+            <div class="c4-main-caption"><h4>Cherry Blossoms</h4><p>Nikon Z7 II · 85mm f/1.4 · 1/800s · ISO 200</p></div>
+          </div>
+          <div class="c4-main-slide">
+            <img src="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=900&q=80" alt="Product 2">
+            <div class="c4-main-caption"><h4>Golden Retriever</h4><p>Sony A7IV · 50mm f/2 · 1/250s · ISO 400</p></div>
+          </div>
+          <div class="c4-main-slide">
+            <img src="https://images.unsplash.com/photo-1510784722466-f2aa240c8ce9?w=900&q=80" alt="Product 3">
+            <div class="c4-main-caption"><h4>Autumn Palette</h4><p>Canon R5 · 24mm f/8 · 1/60s · ISO 800</p></div>
+          </div>
+          <div class="c4-main-slide">
+            <img src="https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=900&q=80" alt="Product 4">
+            <div class="c4-main-caption"><h4>Dessert Architecture</h4><p>Fujifilm X-T5 · 35mm f/2 · 1/125s · ISO 200</p></div>
+          </div>
+          <div class="c4-main-slide">
+            <img src="https://images.unsplash.com/photo-1490750967868-88df5691cc8e?w=900&q=80" alt="Product 5">
+            <div class="c4-main-caption"><h4>Spring Garden</h4><p>Nikon Z6 · 100mm f/2.8 macro · 1/500s · ISO 320</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="c4-thumbs" id="c4thumbs">
+        <div class="c4-thumb active"><img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=200&q=60" alt="t1"></div>
+        <div class="c4-thumb"><img src="https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=200&q=60" alt="t2"></div>
+        <div class="c4-thumb"><img src="https://images.unsplash.com/photo-1510784722466-f2aa240c8ce9?w=200&q=60" alt="t3"></div>
+        <div class="c4-thumb"><img src="https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=200&q=60" alt="t4"></div>
+        <div class="c4-thumb"><img src="https://images.unsplash.com/photo-1490750967868-88df5691cc8e?w=200&q=60" alt="t5"></div>
+      </div>
+    </div>
+  </div>
+
+  <table class="comp-table">
+    <thead><tr><th>Property</th><th>Value</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">Navigation type</td><td>Direct thumbnail click</td><td>Users can skip to any slide</td></tr>
+      <tr><td class="label-cell">Best for</td><td>Product pages, galleries</td><td>High user control</td></tr>
+      <tr><td class="label-cell">Two synced elements</td><td><span class="check">✓ Yes</span></td><td>Main + thumb must stay in sync</td></tr>
+      <tr><td class="label-cell">Autoplay</td><td><span class="cross">✗ Rarely</span></td><td>Users prefer manual browsing</td></tr>
+      <tr><td class="label-cell">Difficulty</td><td><span class="diff-tag diff-med">Medium</span></td><td>Two synced elements</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-wrap">
+    <div class="code-header">
+      <div class="code-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+      <span class="code-lang">THUMBNAIL SYNC LOGIC</span>
+    </div>
+<pre><span class="cm">// Sync thumbnails with main carousel</span>
+<span class="kw">const</span> thumbs = document.<span class="fn">querySelectorAll</span>(<span class="st">'.thumb'</span>);
+
+<span class="kw">function</span> <span class="fn">goToSlide</span>(n) {
+  <span class="cm">// Move main track</span>
+  mainTrack.style.transform = <span class="st">`translateX(-${n * 100}%)`</span>;
+
+  <span class="cm">// Update active thumbnail</span>
+  thumbs.<span class="fn">forEach</span>((t, i) => {
+    t.<span class="fn">classList</span>.toggle(<span class="st">'active'</span>, i === n);
+  });
+  current = n;
+}
+
+<span class="cm">// Click any thumbnail → jump to that slide</span>
+thumbs.<span class="fn">forEach</span>((thumb, i) => {
+  thumb.onclick = () => <span class="fn">goToSlide</span>(i);
+});</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  05 — TESTIMONIAL
+════════════════════════════════════ -->
+<section class="demo-section reveal" id="c5">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-meta">
+      <span class="section-tag tag-gold">Conversion</span>
+      <h2 class="section-title">Testimonial Carousel</h2>
+      <p class="section-desc">Text-centric slides with fade + slide-in transitions. Pairs a quote with an avatar and author bio. A staple of landing pages and SaaS marketing sites.</p>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">LIVE DEMO — TESTIMONIAL ROTATOR</div>
+    <div class="c5-wrapper">
+      <div class="c5-track" id="c5track">
+        <div class="c5-slide active">
+          <span class="c5-quote-mark">"</span>
+          <p class="c5-quote">The carousel component transformed our product page. Conversions jumped 34% in the first month after deployment. It was the easiest UI decision we've ever made.</p>
+          <div class="c5-author">
+            <img class="c5-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Sarah">
+            <div><div class="c5-author-name">Sarah Kimani</div><div class="c5-author-role">Head of Product, Volta Labs</div></div>
+          </div>
+        </div>
+        <div class="c5-slide">
+          <span class="c5-quote-mark">"</span>
+          <p class="c5-quote">We replaced a static grid with a multi-card carousel and our average session time doubled overnight. Users were actually exploring the catalogue instead of leaving the page.</p>
+          <div class="c5-author">
+            <img class="c5-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="James">
+            <div><div class="c5-author-name">James Odhiambo</div><div class="c5-author-role">CTO, Meridian Commerce</div></div>
+          </div>
+        </div>
+        <div class="c5-slide">
+          <span class="c5-quote-mark">"</span>
+          <p class="c5-quote">Our photography clients expect gallery carousels to feel premium. The thumbnail navigator we built using these techniques elevated our entire brand perception overnight.</p>
+          <div class="c5-author">
+            <img class="c5-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Priya">
+            <div><div class="c5-author-name">Priya Nkosi</div><div class="c5-author-role">Creative Director, Studio Lumis</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="c5-controls">
+        <button class="c5-btn" id="c5prev">&#8592;</button>
+        <div class="c5-indicators" id="c5inds">
+          <button class="c5-ind active"></button>
+          <button class="c5-ind"></button>
+          <button class="c5-ind"></button>
+        </div>
+        <button class="c5-btn" id="c5next">&#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <table class="comp-table">
+    <thead><tr><th>Property</th><th>Value</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">Content type</td><td>Text + avatar</td><td>No large images needed</td></tr>
+      <tr><td class="label-cell">Best for</td><td>Landing pages, SaaS</td><td>Builds trust and social proof</td></tr>
+      <tr><td class="label-cell">Animation</td><td>Fade + X slide-in</td><td>Direction signals forward/back</td></tr>
+      <tr><td class="label-cell">Autoplay</td><td><span class="check">✓ Often</span></td><td>Slow 5–6s interval preferred</td></tr>
+      <tr><td class="label-cell">Difficulty</td><td><span class="diff-tag diff-easy">Easy</span></td><td>Mostly CSS transitions</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-wrap">
+    <div class="code-header">
+      <div class="code-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+      <span class="code-lang">FADE + SLIDE-IN COMBO</span>
+    </div>
+<pre><span class="cm">/* Fade AND translateX for direction feel */</span>
+<span class="fn">.slide</span>        { <span class="at">opacity</span>: <span class="nm">0</span>; <span class="at">transform</span>: <span class="st">translateX(20px)</span>; <span class="at">transition</span>: <span class="st">all 0.6s ease</span>; }
+<span class="fn">.slide.active</span> { <span class="at">opacity</span>: <span class="nm">1</span>; <span class="at">transform</span>: <span class="st">translateX(0)</span>; }
+
+<span class="cm">// Toggle active class — CSS does the rest</span>
+<span class="kw">function</span> <span class="fn">showSlide</span>(n) {
+  slides[current].<span class="fn">classList</span>.remove(<span class="st">'active'</span>);
+  current = (n + slides.length) % slides.length;
+  slides[current].<span class="fn">classList</span>.add(<span class="st">'active'</span>);
+  <span class="fn">updateIndicators</span>(current);
+}</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  06 — SPLIT / VERTICAL
+════════════════════════════════════ -->
+<section class="demo-section reveal" id="c6">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-meta">
+      <span class="section-tag tag-teal">Editorial</span>
+      <h2 class="section-title">Split / Vertical Carousel</h2>
+      <p class="section-desc">Image on one side, text on the other — with vertical transitions. Creates an editorial magazine feel. Used in feature storytelling, portfolio case studies, and premium landing pages.</p>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">LIVE DEMO — SPLIT LAYOUT, VERTICAL NAVIGATION</div>
+    <div class="c6-wrapper">
+      <div class="c6-left">
+        <div class="c6-img-track" id="c6imgtrack">
+          <div class="c6-img"><img src="https://images.unsplash.com/photo-1550353175-a3611868086b?w=700&q=80" alt="Design"></div>
+          <div class="c6-img"><img src="https://images.unsplash.com/photo-1558655146-d09347e92766?w=700&q=80" alt="Code"></div>
+          <div class="c6-img"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=700&q=80" alt="Team"></div>
+          <div class="c6-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&q=80" alt="Data"></div>
+        </div>
+      </div>
+      <div class="c6-right">
+        <div class="c6-slides-panel">
+          <div class="c6-text-slide active">
+            <div class="c6-number">01 / 04</div>
+            <h3>Design Thinking</h3>
+            <p>Great products begin with deep empathy for the user. We prototype rapidly, test obsessively, and iterate based on real-world feedback — not assumptions.</p>
+          </div>
+          <div class="c6-text-slide">
+            <div class="c6-number">02 / 04</div>
+            <h3>Crafted in Code</h3>
+            <p>Every interface is built with semantic HTML, accessible markup, and performance-first CSS. Beauty means nothing if it doesn't load in under 2 seconds.</p>
+          </div>
+          <div class="c6-text-slide">
+            <div class="c6-number">03 / 04</div>
+            <h3>Built Together</h3>
+            <p>Cross-functional teams ship better products. Designers who understand constraints and engineers who think visually create things that neither could alone.</p>
+          </div>
+          <div class="c6-text-slide">
+            <div class="c6-number">04 / 04</div>
+            <h3>Driven by Data</h3>
+            <p>Intuition gets you to v1. Data gets you to v10. We instrument everything, measure what matters, and let real usage patterns guide every decision.</p>
+          </div>
+        </div>
+        <div class="c6-nav" id="c6tabs">
+          <button class="c6-tab active"></button>
+          <button class="c6-tab"></button>
+          <button class="c6-tab"></button>
+          <button class="c6-tab"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="comp-table">
+    <thead><tr><th>Property</th><th>Value</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">Layout</td><td>CSS Grid 1fr 1fr</td><td>Image left, text right</td></tr>
+      <tr><td class="label-cell">Transition</td><td>Vertical translateY</td><td>Image moves up/down</td></tr>
+      <tr><td class="label-cell">Best for</td><td>Storytelling, features</td><td>Premium editorial feel</td></tr>
+      <tr><td class="label-cell">Mobile</td><td><span class="cross">✗ Needs adaptation</span></td><td>Stack vertically on small screens</td></tr>
+      <tr><td class="label-cell">Difficulty</td><td><span class="diff-tag diff-hard">Advanced</span></td><td>Two synced carousels, CSS Grid</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-wrap">
+    <div class="code-header">
+      <div class="code-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+      <span class="code-lang">VERTICAL SYNC PATTERN</span>
+    </div>
+<pre><span class="cm">/* Image track scrolls vertically */</span>
+<span class="fn">.img-track</span> { <span class="at">display</span>: <span class="st">flex</span>; <span class="at">flex-direction</span>: <span class="st">column</span>; <span class="at">transition</span>: <span class="st">transform 0.6s ease</span>; }
+<span class="fn">.img-panel</span> { <span class="at">min-height</span>: <span class="nm">380px</span>; <span class="at">flex-shrink</span>: <span class="nm">0</span>; }
+
+<span class="cm">/* Text slides fade in place */</span>
+<span class="fn">.text-slide</span>        { <span class="at">position</span>: <span class="st">absolute</span>; <span class="at">inset</span>: <span class="nm">0</span>; <span class="at">opacity</span>: <span class="nm">0</span>; }
+<span class="fn">.text-slide.active</span> { <span class="at">opacity</span>: <span class="nm">1</span>; }
+
+<span class="cm">// Move both carousels in sync</span>
+<span class="kw">function</span> <span class="fn">goTo</span>(n) {
+  imgTrack.style.transform = <span class="st">`translateY(-${n * 380}px)`</span>;
+  textSlides[active].<span class="fn">classList</span>.remove(<span class="st">'active'</span>);
+  textSlides[n].<span class="fn">classList</span>.add(<span class="st">'active'</span>);
+  active = n;
+}</pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  07 — CINEMATIC
+════════════════════════════════════ -->
+<section class="demo-section reveal" id="c7">
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div class="section-meta">
+      <span class="section-tag tag-rust">Premium</span>
+      <h2 class="section-title">Cinematic / Ken Burns</h2>
+      <p class="section-desc">Full-screen crossfade with a slow zoom (Ken Burns effect) on the background image. The subtle motion creates a living, breathing hero. Used by travel brands, luxury sites, and film platforms.</p>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-label">LIVE DEMO — WATCH THE SLOW ZOOM ON EACH SLIDE</div>
+    <div class="c7-wrapper">
+      <div class="c7-slide active" id="c7s0">
+        <div class="c7-bg" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1400&q=80')"></div>
+        <div class="c7-overlay">
+          <div class="c7-content">
+            <div class="c7-eyebrow">— Destination 01</div>
+            <h2>The Maldivian Light</h2>
+            <p>Where turquoise lagoons meet an endless horizon. A place that changes how you see the colour blue.</p>
+            <button class="c7-cta">Explore ↗</button>
+          </div>
+        </div>
+      </div>
+      <div class="c7-slide" id="c7s1">
+        <div class="c7-bg" style="background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1400&q=80')"></div>
+        <div class="c7-overlay">
+          <div class="c7-content">
+            <div class="c7-eyebrow">— Destination 02</div>
+            <h2>Alpine Solitude</h2>
+            <p>Snow-capped silence above 3,000 metres. The air is different here — cleaner, sharper, more honest.</p>
+            <button class="c7-cta">Explore ↗</button>
+          </div>
+        </div>
+      </div>
+      <div class="c7-slide" id="c7s2">
+        <div class="c7-bg" style="background-image:url('https://images.unsplash.com/photo-1523978591478-c753949ff840?w=1400&q=80')"></div>
+        <div class="c7-overlay">
+          <div class="c7-content">
+            <div class="c7-eyebrow">— Destination 03</div>
+            <h2>Desert at Dusk</h2>
+            <p>The Sahara in the final hour of daylight. Dunes that shift like the hands of a slow clock.</p>
+            <button class="c7-cta">Explore ↗</button>
+          </div>
+        </div>
+      </div>
+      <div class="c7-side-nav" id="c7sidenav">
+        <button class="c7-side-dot active"></button>
+        <button class="c7-side-dot"></button>
+        <button class="c7-side-dot"></button>
+      </div>
+      <div class="c7-progress" id="c7progress"></div>
+    </div>
+  </div>
+
+  <table class="comp-table">
+    <thead><tr><th>Property</th><th>Value</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="label-cell">Animation</td><td>Fade + CSS scale (Ken Burns)</td><td>Scale 1.08 → 1.0 over 8s</td></tr>
+      <tr><td class="label-cell">Best for</td><td>Travel, luxury, film</td><td>Maximum emotional impact</td></tr>
+      <tr><td class="label-cell">Image quality</td><td>High-res required</td><td>Zoom reveals compression artifacts</td></tr>
+      <tr><td class="label-cell">Performance</td><td><span class="cross">✗ Heavy</span></td><td>Lazy-load + preload next slide</td></tr>
+      <tr><td class="label-cell">Difficulty</td><td><span class="diff-tag diff-hard">Advanced</span></td><td>CSS transitions + progress timing</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-wrap">
+    <div class="code-header">
+      <div class="code-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+      <span class="code-lang">KEN BURNS EFFECT</span>
+    </div>
+<pre><span class="cm">/* The Ken Burns zoom: start zoomed in, slowly zoom to normal */</span>
+<span class="fn">.slide .bg</span>        { <span class="at">transform</span>: <span class="st">scale(1.08)</span>; <span class="at">transition</span>: <span class="st">transform 8s ease-out</span>; }
+<span class="fn">.slide.active .bg</span> { <span class="at">transform</span>: <span class="st">scale(1)</span>; }  <span class="cm">/* zoom OUT slowly */</span>
+
+<span class="cm">/* Crossfade between slides */</span>
+<span class="fn">.slide</span>        { <span class="at">position</span>: <span class="st">absolute</span>; <span class="at">inset</span>: <span class="nm">0</span>; <span class="at">opacity</span>: <span class="nm">0</span>; <span class="at">transition</span>: <span class="st">opacity 1s ease</span>; }
+<span class="fn">.slide.active</span> { <span class="at">opacity</span>: <span class="nm">1</span>; }
+
+<span class="cm">// Progress bar drives the autoplay</span>
+<span class="kw">function</span> <span class="fn">startProgress</span>() {
+  bar.style.transition = <span class="st">'none'</span>;
+  bar.style.width = <span class="st">'0%'</span>;
+  setTimeout(() => {
+    bar.style.transition = <span class="st">'width 6s linear'</span>;
+    bar.style.width = <span class="st">'100%'</span>;
+  }, <span class="nm">50</span>);
+}
+setInterval(() => { <span class="fn">nextSlide</span>(); <span class="fn">startProgress</span>(); }, <span class="nm">6000</span>);</pre>
+  </div>
+</section>
+
+</div><!-- /showcase -->
+
+<!-- BIG COMPARISON TABLE -->
+<section class="big-table-section">
+  <div class="big-table-inner">
+    <h2>All 7 Types — Side by Side</h2>
+    <p>A complete reference for choosing the right carousel for your use case.</p>
+    <table class="big-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Type</th>
+          <th>Best Use Case</th>
+          <th>Animation</th>
+          <th>Autoplay</th>
+          <th>Touch</th>
+          <th>A11y</th>
+          <th>Difficulty</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.75rem">01</td>
+          <td><div class="type-num">Full-Width</div><div class="type-name">Image Slider</div></td>
+          <td>Hero banners, photography</td>
+          <td>translateX</td>
+          <td><span class="pill-yes">Yes</span></td>
+          <td><span class="pill-yes">Yes</span></td>
+          <td><span class="pill-yes">Good</span></td>
+          <td><span class="diff-tag diff-easy">Easy</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.75rem">02</td>
+          <td><div class="type-num">Fade</div><div class="type-name">Crossfade</div></td>
+          <td>Testimonials, moody visuals</td>
+          <td>opacity</td>
+          <td><span class="pill-yes">Yes</span></td>
+          <td><span class="pill-med">Partial</span></td>
+          <td><span class="pill-yes">Good</span></td>
+          <td><span class="diff-tag diff-easy">Easy</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.75rem">03</td>
+          <td><div class="type-num">Multi-Card</div><div class="type-name">Peek Carousel</div></td>
+          <td>Products, articles, cards</td>
+          <td>translateX partial</td>
+          <td><span class="pill-no">Rarely</span></td>
+          <td><span class="pill-yes">Yes</span></td>
+          <td><span class="pill-med">Medium</span></td>
+          <td><span class="diff-tag diff-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.75rem">04</td>
+          <td><div class="type-num">Thumbnail</div><div class="type-name">Navigator</div></td>
+          <td>Product pages, galleries</td>
+          <td>translateX + highlight</td>
+          <td><span class="pill-no">Rarely</span></td>
+          <td><span class="pill-yes">Yes</span></td>
+          <td><span class="pill-yes">Good</span></td>
+          <td><span class="diff-tag diff-med">Medium</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.75rem">05</td>
+          <td><div class="type-num">Testimonial</div><div class="type-name">Text Rotator</div></td>
+          <td>Landing pages, reviews</td>
+          <td>fade + slideX</td>
+          <td><span class="pill-yes">Yes</span></td>
+          <td><span class="pill-med">Optional</span></td>
+          <td><span class="pill-yes">Good</span></td>
+          <td><span class="diff-tag diff-easy">Easy</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.75rem">06</td>
+          <td><div class="type-num">Split</div><div class="type-name">Vertical</div></td>
+          <td>Editorial, storytelling</td>
+          <td>translateY + fade</td>
+          <td><span class="pill-no">Rarely</span></td>
+          <td><span class="pill-no">Limited</span></td>
+          <td><span class="pill-med">Medium</span></td>
+          <td><span class="diff-tag diff-hard">Advanced</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:0.75rem">07</td>
+          <td><div class="type-num">Cinematic</div><div class="type-name">Ken Burns</div></td>
+          <td>Travel, luxury, film</td>
+          <td>fade + scale zoom</td>
+          <td><span class="pill-yes">Yes</span></td>
+          <td><span class="pill-med">Optional</span></td>
+          <td><span class="pill-med">Medium</span></td>
+          <td><span class="diff-tag diff-hard">Advanced</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  CAROUSEL SHOWCASE — 7 LIVE DEMOS WITH CODE &nbsp;·&nbsp; BUILT WITH VANILLA HTML / CSS / JS &nbsp;·&nbsp; NO FRAMEWORKS
+</footer>
+
+<script>
+/* ────────────────────────────────
+   CAROUSEL 1 — Full-Width Slider
+──────────────────────────────── */
+(function(){
+  let idx = 0;
+  const track = document.getElementById('c1track');
+  const dots  = document.querySelectorAll('#c1dots .c1-dot');
+  const total = 4;
+  function goTo(n){ idx=((n%total)+total)%total; track.style.transform=`translateX(-${idx*100}%)`; dots.forEach((d,i)=>d.classList.toggle('active',i===idx)); }
+  document.getElementById('c1next').onclick=()=>goTo(idx+1);
+  document.getElementById('c1prev').onclick=()=>goTo(idx-1);
+  dots.forEach((d,i)=>d.onclick=()=>goTo(i));
+  let t=setInterval(()=>goTo(idx+1),4500);
+  track.closest('.demo-box').addEventListener('mouseenter',()=>clearInterval(t));
+  track.closest('.demo-box').addEventListener('mouseleave',()=>{t=setInterval(()=>goTo(idx+1),4500);});
+  // Touch
+  let sx=null;
+  track.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;});
+  track.addEventListener('touchend',e=>{if(sx===null)return;let d=sx-e.changedTouches[0].clientX;if(Math.abs(d)>40)goTo(d>0?idx+1:idx-1);sx=null;});
+})();
+
+/* ────────────────────────────────
+   CAROUSEL 2 — Fade + Timer Bar
+──────────────────────────────── */
+(function(){
+  let cur=0;
+  const slides=document.querySelectorAll('#c2s0,#c2s1,#c2s2');
+  const dots=document.querySelectorAll('#c2dots .c2-dot');
+  const bar=document.getElementById('c2timer');
+  const DUR=4200;
+  function showProgress(){bar.style.transition='none';bar.style.width='0%';setTimeout(()=>{bar.style.transition=`width ${DUR}ms linear`;bar.style.width='100%';},30);}
+  function goTo(n){slides[cur].classList.remove('active');dots[cur].classList.remove('active');cur=(n+slides.length)%slides.length;slides[cur].classList.add('active');dots[cur].classList.add('active');showProgress();}
+  dots.forEach((d,i)=>d.onclick=()=>goTo(i));
+  showProgress();
+  setInterval(()=>goTo(cur+1),DUR);
+})();
+
+/* ────────────────────────────────
+   CAROUSEL 3 — Multi-Card
+──────────────────────────────── */
+(function(){
+  const track=document.getElementById('c3track');
+  const cards=track.children;
+  let pos=0;
+  function getStep(){ return cards[0].offsetWidth + 19; }
+  function getMax(){ return Math.max(0,(cards.length-3)*getStep()); }
+  document.getElementById('c3next').onclick=()=>{pos=Math.min(pos+getStep(),getMax());track.style.transform=`translateX(-${pos}px)`;};
+  document.getElementById('c3prev').onclick=()=>{pos=Math.max(pos-getStep(),0);track.style.transform=`translateX(-${pos}px)`;};
+  let sx=null;
+  track.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;});
+  track.addEventListener('touchend',e=>{if(sx===null)return;let d=sx-e.changedTouches[0].clientX;if(Math.abs(d)>40){if(d>0){pos=Math.min(pos+getStep(),getMax());}else{pos=Math.max(pos-getStep(),0);}track.style.transform=`translateX(-${pos}px)`;}sx=null;});
+})();
+
+/* ────────────────────────────────
+   CAROUSEL 4 — Thumbnail Nav
+──────────────────────────────── */
+(function(){
+  let cur=0;
+  const track=document.getElementById('c4track');
+  const thumbs=document.querySelectorAll('#c4thumbs .c4-thumb');
+  function goTo(n){cur=n;track.style.transform=`translateX(-${n*100}%)`;thumbs.forEach((t,i)=>t.classList.toggle('active',i===n));}
+  thumbs.forEach((t,i)=>t.onclick=()=>goTo(i));
+  setInterval(()=>goTo((cur+1)%thumbs.length),3800);
+})();
+
+/* ────────────────────────────────
+   CAROUSEL 5 — Testimonial
+──────────────────────────────── */
+(function(){
+  let cur=0;
+  const slides=document.querySelectorAll('#c5track .c5-slide');
+  const inds=document.querySelectorAll('#c5inds .c5-ind');
+  function goTo(n){slides[cur].classList.remove('active');inds[cur].classList.remove('active');cur=(n+slides.length)%slides.length;slides[cur].classList.add('active');inds[cur].classList.add('active');}
+  document.getElementById('c5next').onclick=()=>goTo(cur+1);
+  document.getElementById('c5prev').onclick=()=>goTo(cur-1);
+  inds.forEach((ind,i)=>ind.onclick=()=>goTo(i));
+  setInterval(()=>goTo(cur+1),5500);
+})();
+
+/* ────────────────────────────────
+   CAROUSEL 6 — Split / Vertical
+──────────────────────────────── */
+(function(){
+  let cur=0;
+  const imgTrack=document.getElementById('c6imgtrack');
+  const textSlides=document.querySelectorAll('.c6-text-slide');
+  const tabs=document.querySelectorAll('#c6tabs .c6-tab');
+  const H=380;
+  function goTo(n){textSlides[cur].classList.remove('active');tabs[cur].classList.remove('active');cur=n;imgTrack.style.transform=`translateY(-${cur*H}px)`;textSlides[cur].classList.add('active');tabs[cur].classList.add('active');}
+  tabs.forEach((t,i)=>t.onclick=()=>goTo(i));
+  setInterval(()=>goTo((cur+1)%tabs.length),4500);
+})();
+
+/* ────────────────────────────────
+   CAROUSEL 7 — Cinematic
+──────────────────────────────── */
+(function(){
+  let cur=0;
+  const slides=document.querySelectorAll('#c7s0,#c7s1,#c7s2');
+  const dots=document.querySelectorAll('#c7sidenav .c7-side-dot');
+  const bar=document.getElementById('c7progress');
+  const DUR=6000;
+  function startProgress(){bar.style.transition='none';bar.style.width='0%';setTimeout(()=>{bar.style.transition=`width ${DUR}ms linear`;bar.style.width='100%';},30);}
+  function goTo(n){slides[cur].classList.remove('active');dots[cur].classList.remove('active');cur=(n+slides.length)%slides.length;slides[cur].classList.add('active');dots[cur].classList.add('active');startProgress();}
+  dots.forEach((d,i)=>d.onclick=()=>{clearInterval(autoT);goTo(i);autoT=setInterval(()=>goTo(cur+1),DUR);});
+  startProgress();
+  let autoT=setInterval(()=>goTo(cur+1),DUR);
+})();
+
+/* ──────────────────
+   SCROLL REVEAL
+────────────────── */
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');}),{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+</script>
+</body>
+</html>
